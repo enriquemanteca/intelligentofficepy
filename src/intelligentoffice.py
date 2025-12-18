@@ -55,7 +55,6 @@ class IntelligentOffice:
 
     def check_quadrant_occupancy(self, pin: int) -> bool:
         if pin in [11,12,13,15]:
-
             return GPIO.input(pin)
         else:
             raise IntelligentOfficeError
