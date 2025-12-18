@@ -39,3 +39,13 @@ class TestIntelligentOffice(unittest.TestCase):
         self.assertFalse(intelligent_office.buzzer_on)
         buzzer.assert_called_once_with(intelligent_office.BUZZER_PIN,False)
 
+    @patch.object(GPIO, "output")
+    @patch.object(GPIO, "input")
+    def test_bad_air_quality(self, sensor: Mock, buzzer: Mock):
+        sensor.return_value = False
+        intelligent_office = IntelligentOffice()
+        intelligent_office.buzzer_on = False
+        intelligent_office.monitor_air_quality()
+        self.assertTrue(intelligent_office.buzzer_on)
+        buzzer.assert_called_once_with(intelligent_office.BUZZER_PIN, True)
+
