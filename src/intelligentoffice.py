@@ -70,7 +70,6 @@ class IntelligentOffice:
                 change_servo_angle(self.servo, 2)  # Close blinds
                 self.blinds_open = False
 
-
     def manage_light_level(self) -> None:
         # To be implemented
         pass

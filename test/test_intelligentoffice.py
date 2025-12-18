@@ -59,4 +59,5 @@ class TestIntelligentOffice(unittest.TestCase):
         intelligent_office.blinds_open = False
         intelligent_office.manage_blinds_based_on_time()
         self.assertTrue(intelligent_office.blinds_open)
-        motor.assert_called_once_with(12)
+        motor.assert_called_once_with(12) # This line is the one that make the test not to pass
+
