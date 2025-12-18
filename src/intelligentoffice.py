@@ -58,6 +58,7 @@ class IntelligentOffice:
             return GPIO.input(pin)
         else:
             raise IntelligentOfficeError
+
     def manage_blinds_based_on_time(self) -> None:
         # To be implemented
         pass
@@ -67,8 +68,9 @@ class IntelligentOffice:
         pass
 
     def monitor_air_quality(self) -> None:
-        # To be implemented
-        pass
+        if GPIO.input(self.GAS_PIN):  # Assuming True means good air quality
+            self.buzzer_on = False
+            GPIO.output(self.BUZZER_PIN, False)
 
     def change_servo_angle(self, duty_cycle):
         """
