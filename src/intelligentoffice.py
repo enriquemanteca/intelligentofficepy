@@ -60,8 +60,15 @@ class IntelligentOffice:
             raise IntelligentOfficeError
 
     def manage_blinds_based_on_time(self) -> None:
-        # To be implemented
-        pass
+        current_time = self.rtc.read_datetime()
+        if 7 <= current_time.hour < 19:
+            if not self.blinds_open:
+                change_servo_angle(self.servo, 12)  # Open blinds
+                self.blinds_open = True
+        else:
+            if self.blinds_open:
+                change_servo_angle(self.servo, 2)  # Close blinds
+                self.blinds_open = False
 
     def manage_light_level(self) -> None:
         # To be implemented
@@ -75,15 +82,16 @@ class IntelligentOffice:
             self.buzzer_on = True
             GPIO.output(self.BUZZER_PIN, True)
 
-    def change_servo_angle(self, duty_cycle):
-        """
-        Changes the servo motor's angle by passing it the corresponding PWM duty cycle
-        :param duty_cycle: the PWM duty cycle (it's a percentage value)
-        """
-        self.servo.ChangeDutyCycle(duty_cycle)
-        if DEPLOYMENT:  # Sleep only if you are deploying on the actual hardware
-            time.sleep(1)
-        self.servo.ChangeDutyCycle(0)
+
+def change_servo_angle(servo, duty_cycle):
+    """
+    Changes the servo motor's angle by passing it the corresponding PWM duty cycle
+    :param duty_cycle: the PWM duty cycle (it's a percentage value)
+    """
+    servo.ChangeDutyCycle(duty_cycle)
+    if DEPLOYMENT:  # Sleep only if you are deploying on the actual hardware
+        time.sleep(1)
+    servo.ChangeDutyCycle(0)
 
 
 class IntelligentOfficeError(Exception):
