@@ -19,7 +19,7 @@ class TestIntelligentOffice(unittest.TestCase):
 
     @patch.object(GPIO, "input")
     def test_not_occupied(self, sensor: Mock):
-        pin = 12
+        pin = 13
         sensor.return_value = False
         intelligent_office = IntelligentOffice()
         occupancy = intelligent_office.check_quadrant_occupancy(pin=pin)
