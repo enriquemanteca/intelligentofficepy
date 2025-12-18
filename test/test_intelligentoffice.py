@@ -7,6 +7,7 @@ from sympy.physics.units import hours
 import mock.GPIO as GPIO
 from mock.SDL_DS3231 import SDL_DS3231
 from mock.adafruit_veml7700 import VEML7700
+from src import intelligentoffice
 from src.intelligentoffice import IntelligentOffice, IntelligentOfficeError
 
 
@@ -49,3 +50,13 @@ class TestIntelligentOffice(unittest.TestCase):
         self.assertTrue(intelligent_office.buzzer_on)
         buzzer.assert_called_once_with(intelligent_office.BUZZER_PIN, True)
 
+
+    @patch.object(SDL_DS3231,"read_datetime")
+    @patch.object(intelligentoffice, "change_servo_angle")
+    def test_open_blinds(self, motor: Mock, rtc: Mock):
+        rtc.return_value = datetime(2025, 11, 18, 8, 0)
+        intelligent_office = IntelligentOffice()
+        intelligent_office.blinds_open = False
+        intelligent_office.manage_blinds_based_on_time()
+        self.assertTrue(intelligent_office.blinds_open)
+        motor.assert_called_once_with(12)
